@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCA-F · Cohort Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#8B3A2A;
+  --navy-h:#9E4432;
+  --navy-l:#F9EDE9;
+  --navy-m:#F0C9BF;
+  --t1:#111827;
+  --t2:#4B5563;
+  --t3:#9CA3AF;
+  --bd:#E5E7EB;
+  --bd2:#D1D5DB;
+  --surf:#F9FAFB;
+  --surf2:#F1F5F9;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--t1);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--navy);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── layout ── */
+.wrap{max-width:860px;margin:0 auto;padding:0 28px}
+
+/* ── header ── */
+header{padding:60px 0 0;border-bottom:1px solid var(--navy)}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--navy);font-weight:500;display:block;margin-bottom:16px}
+h1.main{font-size:clamp(30px,5vw,42px);font-weight:500;line-height:1.1;color:var(--t1);margin-bottom:10px}
+.tagline{font-size:15px;color:var(--t2);margin-bottom:32px;font-weight:300}
+
+/* ── nav ── */
+nav{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--bd)}
+.nav-inner{display:flex;gap:0;overflow-x:auto;max-width:860px;margin:0 auto;padding:0 28px}
+.tab{padding:14px 20px 13px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;font-family:'DM Sans',sans-serif;font-weight:400;transition:color .2s}
+.tab:hover{color:var(--t2)}
+.tab.on{color:var(--navy);border-bottom-color:var(--navy);font-weight:500}
+
+/* ── panels ── */
+.panel{display:none;padding:52px 0 100px}
+.panel.on{display:block;animation:fd .3s ease}
+@keyframes fd{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ── section headers ── */
+.sec-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);font-weight:500;margin-bottom:8px}
+.sec-title{font-size:26px;font-weight:500;margin-bottom:8px;color:var(--t1)}
+.sec-desc{font-size:15px;color:var(--t2);max-width:600px;margin-bottom:44px;line-height:1.7}
+.divider{height:1px;background:var(--bd);margin:40px 0}
+
+/* ── timeline ── */
+.tl-table{width:100%;border-collapse:collapse}
+.tl-row{border-bottom:1px solid var(--bd)}
+.tl-row:last-child{border-bottom:none}
+.tl-row td{padding:16px 0;vertical-align:middle}
+.tl-w{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--navy);width:48px;font-variant-numeric:tabular-nums;padding-right:16px}
+.tl-d{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);width:120px;font-weight:400;padding-right:20px;white-space:nowrap}
+.tl-f{font-size:15px;color:var(--t1);font-weight:300}
+.tl-row.exam-row{background:var(--navy-l)}
+.tl-row.exam-row .tl-f{font-weight:400}
+.badge{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:3px 9px;border-radius:3px;margin-left:10px;vertical-align:middle}
+.b-navy{background:var(--navy-l);color:var(--navy)}
+.b-green{background:#ECFDF5;color:#065F46}
+.b-amber{background:#FFFBEB;color:#78350F}
+.b-red{background:#FEF2F2;color:#7F1D1D}
+.b-slate{background:var(--surf2);color:var(--t2)}
+/* ── interactive timeline ── */
+.tl-svg-wrap{overflow-x:auto;padding:0 0 20px}
+.tl-node{cursor:pointer;transition:opacity .18s}
+.tl-node:hover{opacity:.8}
+.tl-node.tl-act{opacity:1}
+.tl-node.tl-dim{opacity:.28}
+.tl-detail{display:none;margin:0 0 36px;border:1px solid var(--bd);border-left:3px solid var(--navy);border-radius:2px;padding:20px 24px;background:#fff}
+.tl-d-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.tl-d-wn{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--navy)}
+.tl-d-ph{font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:2px;font-weight:500}
+.tl-d-cl{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;line-height:1;padding:0;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.tl-d-cl:hover{color:var(--t1)}
+.tl-d-ti{font-size:16px;font-weight:500;color:var(--t1);margin-bottom:3px;line-height:1.35}
+.tl-d-dt{font-size:11px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-family:'DM Mono',monospace}
+.tl-d-li{margin:0;padding:0;list-style:none}
+.tl-d-li li{font-size:14px;color:var(--t2);padding:7px 0 7px 16px;border-bottom:1px solid var(--surf);position:relative;line-height:1.6}
+.tl-d-li li:last-child{border-bottom:none}
+.tl-d-li li::before{content:'—';position:absolute;left:0;color:var(--navy);font-size:10px;top:10px;font-family:'DM Mono',monospace}
+
+/* ── learning style ── */
+.principle{border-bottom:1px solid var(--bd);overflow:hidden}
+.principle:last-child{border-bottom:none}
+.p-head{display:flex;gap:20px;align-items:center;padding:24px 0;cursor:pointer;user-select:none;margin-bottom:0}
+.p-head:hover .p-title{color:var(--navy)}
+.p-chevron{margin-left:auto;color:var(--t3);font-size:14px;font-weight:500;transition:transform .22s;flex-shrink:0}
+.principle.open .p-chevron{transform:rotate(90deg)}
+.p-content{display:none;padding-bottom:32px}
+.principle.open .p-content{display:block}
+.p-num{font-family:'DM Mono',monospace;font-size:12px;color:var(--navy);font-weight:500;letter-spacing:.08em;min-width:24px}
+.p-title{font-size:17px;font-weight:500;color:var(--t1);transition:color .15s}
+.p-body{font-size:15px;color:var(--t2);line-height:1.75;margin-bottom:14px;padding-left:44px}
+.p-ground{margin-left:44px;background:var(--navy-l);border-left:3px solid var(--navy);padding:12px 16px;font-size:14px;color:var(--t1);line-height:1.65}
+.p-ground strong{font-weight:500;color:var(--navy)}
+.p-quote{margin-left:44px;font-size:15px;color:var(--navy);font-weight:400;margin-top:12px;padding:12px 16px;border:1px solid var(--navy-m)}
+.p-example{margin-left:44px;margin-top:14px;background:var(--surf);border-left:2px solid var(--bd2);padding:14px 18px;font-size:13.5px;color:var(--t2);line-height:1.7}
+.p-example em{font-style:italic;color:var(--t1)}
+.roles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:0}
+.role-card{border:1px solid var(--bd);border-top:3px solid var(--bd2);padding:20px 22px;border-radius:2px}
+.role-fixed{border-top-color:var(--navy)}
+.role-rot{border-top-color:var(--bd2)}
+.role-name{font-size:15px;font-weight:500;color:var(--t1);margin-bottom:3px}
+.role-tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;display:block;font-family:'DM Mono',monospace}
+.role-desc{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:10px}
+.role-li{margin:0;padding:0;list-style:none}
+.role-li li{font-size:13px;color:var(--t2);padding:5px 0 5px 14px;border-bottom:1px solid var(--surf2);position:relative;line-height:1.55}
+.role-li li:last-child{border-bottom:none}
+.role-li li::before{content:'—';position:absolute;left:0;color:var(--navy);font-size:10px;top:8px;font-family:'DM Mono',monospace}
+
+.session-table{width:100%;border-collapse:collapse;margin-left:44px;max-width:620px;margin-top:14px}
+.session-table td{padding:10px 14px 10px 0;border-bottom:1px solid var(--bd);font-size:14px;color:var(--t2);vertical-align:top;line-height:1.65}
+.session-table td:first-child{color:var(--t1);font-weight:500;width:28%;padding-right:20px}
+.session-table tr:last-child td{border-bottom:none}
+
+.layer-grid{margin-left:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.layer-box{border:1px solid var(--bd);padding:14px;border-radius:2px}
+.layer-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:500;letter-spacing:.12em;display:block;margin-bottom:4px}
+.layer-label{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:4px}
+.layer-body{font-size:12px;color:var(--t2);line-height:1.55}
+
+/* ── calendar ── */
+.legend{display:flex;gap:28px;margin-bottom:36px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);font-weight:400}
+.ld{width:8px;height:8px;border-radius:50%}
+.ld.l{background:var(--navy)}
+.ld.e{background:var(--bd2)}
+.ld.m{background:var(--navy-l);border:1.5px solid var(--navy);border-radius:50%}
+
+.cal-week{border:1px solid var(--bd);border-radius:2px;margin-bottom:6px;overflow:hidden}
+.cal-week.open{border-color:var(--bd2)}
+.cal-head{display:flex;align-items:center;gap:0;padding:0;cursor:pointer;background:#fff;border:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;transition:background .15s}
+.cal-head:hover{background:var(--surf)}
+.cal-week.open .cal-head{border-bottom:1px solid var(--bd)}
+.cal-wn{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--navy);padding:16px 14px 16px 18px;min-width:62px;font-variant-numeric:tabular-nums;border-right:1px solid var(--bd)}
+.cal-wt{font-size:14px;font-weight:400;color:var(--t1);padding:16px 14px;flex:1}
+.cal-wd{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:16px 14px;white-space:nowrap}
+.cal-arr{padding:16px 18px;color:var(--t3);font-size:16px;transition:transform .22s}
+.cal-week.open .cal-arr{transform:rotate(90deg)}
+.cal-body{display:none;padding:6px 18px 18px}
+.cal-week.open .cal-body{display:block}
+
+.action{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--surf2)}
+.action:last-child{border-bottom:none}
+.action .ld{margin-top:7px;flex-shrink:0}
+.action-inner{flex:1}
+.action-who{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);font-weight:500;display:block;margin-bottom:2px}
+.action-txt{font-size:14px;color:var(--t1);line-height:1.6}
+.lead-action{cursor:pointer;margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:2px;transition:background .15s}
+.lead-action:hover{background:var(--surf)}
+.lead-action .action-txt::after{content:' — view guidance';font-size:11px;color:var(--navy);font-weight:400;opacity:.7}
+.action-list{margin:7px 0 2px;padding:0;list-style:none}
+.action-list li{font-size:13px;color:var(--t2);padding:5px 0 5px 16px;position:relative;line-height:1.55;border-bottom:1px solid var(--surf2)}
+.action-list li:last-child{border-bottom:none}
+.action-list li::before{content:'—';position:absolute;left:0;top:6px;color:var(--navy);font-size:11px;font-family:'DM Mono',monospace}
+.milestone-row{background:var(--navy-l);margin:0 -18px;padding-left:18px;padding-right:18px;border-radius:2px}
+.milestone-row .action-who{color:var(--navy)}
+.milestone-row .action-txt{color:var(--t1);font-weight:400}
+
+/* ── modal ── */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:100;padding:20px;overflow-y:auto}
+.moverlay.show{display:flex;align-items:flex-start;justify-content:center}
+.modal{background:#fff;max-width:580px;width:100%;border-radius:2px;padding:40px 44px;margin:6vh 0;position:relative;border-top:3px solid var(--navy)}
+.m-close{position:absolute;top:16px;right:18px;background:none;border:none;cursor:pointer;color:var(--t3);font-size:20px;line-height:1;padding:4px;font-family:'DM Sans',sans-serif}
+.m-close:hover{color:var(--t1)}
+.m-badge{display:inline-block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;background:var(--navy-l);color:var(--navy);padding:4px 10px;border-radius:2px;margin-bottom:16px}
+.m-title{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:20px;line-height:1.3}
+.m-body p{font-size:14px;color:var(--t2);margin-bottom:12px;line-height:1.7}
+.m-body strong{font-weight:500;color:var(--t1)}
+.m-steps{margin:14px 0 14px 0;list-style:none}
+.m-steps li{display:flex;gap:14px;font-size:14px;color:var(--t2);padding:10px 0;border-bottom:1px solid var(--surf2);line-height:1.6}
+.m-steps li:last-child{border-bottom:none}
+.m-step-n{font-family:'DM Mono',monospace;font-size:11px;color:var(--navy);font-weight:500;min-width:20px;padding-top:2px}
+.m-format{background:var(--surf2);border-left:3px solid var(--bd2);padding:14px 16px;margin:14px 0;font-size:13px;color:var(--t1);line-height:1.75}
+.m-format strong{font-weight:500;color:var(--navy)}
+.m-time{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);border-top:1px solid var(--bd);padding-top:16px;margin-top:8px}
+
+/* ── tools ── */
+.tool-block{padding:32px 0;border-bottom:1px solid var(--bd)}
+.tool-block:last-child{border-bottom:none}
+.tool-title{font-size:16px;font-weight:500;margin-bottom:6px}
+.tool-desc{font-size:14px;color:var(--t2);max-width:600px;margin-bottom:16px;line-height:1.7}
+.res-links{display:flex;flex-direction:column;gap:6px}
+.res-link{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--navy);padding:10px 14px;border:1px solid var(--bd);border-radius:2px;transition:border-color .15s;max-width:520px}
+.res-link:hover{border-color:var(--navy);text-decoration:none}
+.res-link .arr{margin-left:auto;color:var(--t3);font-size:12px}
+.res-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-left:auto;font-weight:400}
+
+.pbox-wrap{position:relative;margin-top:14px}
+.pbox{background:var(--surf2);border:1px solid var(--bd);border-radius:2px;padding:22px 24px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.75;color:var(--t1);max-height:300px;overflow-y:auto;white-space:pre-wrap;font-weight:400}
+.copy-btn{position:absolute;top:12px;right:12px;background:#fff;border:1px solid var(--bd);border-radius:2px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);padding:6px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;transition:all .2s}
+.copy-btn:hover{border-color:var(--navy);color:var(--navy)}
+.copy-btn.copied{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;margin-top:14px}
+.domain-sec{border:1px solid var(--bd);padding:14px 16px;border-radius:2px}
+.domain-sec-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);font-weight:500;margin-bottom:8px;display:block}
+.domain-sec a{display:block;font-size:13px;color:var(--t2);padding:4px 0;border-bottom:1px solid var(--surf2);transition:color .15s}
+.domain-sec a:last-child{border-bottom:none}
+.domain-sec a:hover{color:var(--navy);text-decoration:none}
+
+/* ── footer ── */
+footer{padding:36px 0 60px;border-top:1px solid var(--bd);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
+
+@media(max-width:640px){
+  header,footer,.panel{padding-left:0;padding-right:0}
+  .tl-d{display:none}
+  .layer-grid{grid-template-columns:1fr}
+  .modal{padding:28px 24px}
+  .cal-wd{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Claude Certified Architect · Foundations</span>
+  <h1 class="main">CCA-F Cohort Playbook</h1>
+  <p class="tagline">Ten weeks · Ten people · 3–4 hours a week · Exam Saturday August 22, 2026</p>
+</header>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <button class="tab on" onclick="showTab('p-timeline',this)">Timeline</button>
+    <button class="tab" onclick="showTab('p-style',this)">How we learn</button>
+    <button class="tab" onclick="showTab('p-calendar',this)">Calendar</button>
+    <button class="tab" onclick="showTab('p-tools',this)">Tools &amp; resources</button>
+  </div>
+</nav>
+
+<!-- ══ TIMELINE ══════════════════════════════════════════ -->
+<div class="wrap">
+<div class="panel on" id="p-timeline">
+  <div class="sec-eyebrow">Ten weeks</div>
+  <h2 class="sec-title">The shape of the programme</h2>
+  <p class="sec-desc">Three weeks of SkillJar foundation. One deep domain week. A reality-check mock. Four domain weeks building toward exam readiness. Then the exam.</p>
+
+  <div class="tl-svg-wrap">
+  <svg viewBox="0 0 900 191" style="width:100%;min-width:480px;overflow:visible;font-family:'DM Sans',sans-serif" xmlns="http://www.w3.org/2000/svg">
+
+  <rect x="15" y="5" width="224" height="22" rx="2" fill="#F9FAFB"/>
+  <text x="127" y="20" text-anchor="middle" font-size="11" fill="#64748B" font-weight="500" letter-spacing=".1em">Foundation</text>
+  <rect x="244" y="5" width="553" height="22" rx="2" fill="#F9EDE9"/>
+  <text x="520" y="20" text-anchor="middle" font-size="11" fill="#8B3A2A" font-weight="500" letter-spacing=".1em">Domain study</text>
+  <rect x="802" y="5" width="83" height="22" rx="2" fill="#FEF2F2"/>
+  <text x="843" y="20" text-anchor="middle" font-size="11" fill="#7F1D1D" font-weight="500" letter-spacing=".1em">Exam ready</text>
+
+  <line x1="42" y1="76" x2="858" y2="76" stroke="#E5E7EB" stroke-width="1.5"/>
+
+  <g class="tl-node" id="tln-W1" onclick="tl_sel('W1')"><title>W1 · We begin · Jun 15–21</title>
+    <circle cx="42" cy="76" r="10" fill="white" stroke="#D1D5DB" stroke-width="1.5"/>
+  </g>
+  <text x="42" y="119" text-anchor="middle" font-size="12" fill="#9CA3AF" font-family="'DM Mono',monospace" style="pointer-events:none">W1</text>
+  <text x="42" y="135" text-anchor="middle" font-size="11" fill="#9CA3AF" style="pointer-events:none">Setup</text>
+
+  <g class="tl-node" id="tln-W2" onclick="tl_sel('W2')"><title>W2 · Building with the Claude API · Jun 22–28</title>
+    <circle cx="133" cy="76" r="10" fill="white" stroke="#D1D5DB" stroke-width="1.5"/>
+  </g>
+  <text x="133" y="119" text-anchor="middle" font-size="12" fill="#9CA3AF" font-family="'DM Mono',monospace" style="pointer-events:none">W2</text>
+  <text x="133" y="135" text-anchor="middle" font-size="11" fill="#9CA3AF" style="pointer-events:none">API course</text>
+
+  <g class="tl-node" id="tln-W3" onclick="tl_sel('W3')"><title>W3 · Learning path complete · Jun 29–Jul 5</title>
+    <circle cx="224" cy="76" r="10" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
+    <text x="224" y="80" text-anchor="middle" font-size="12" fill="#065F46" font-weight="500" style="pointer-events:none">&#10003;</text>
+  </g>
+  <text x="224" y="119" text-anchor="middle" font-size="12" fill="#9CA3AF" font-family="'DM Mono',monospace" style="pointer-events:none">W3</text>
+  <text x="224" y="135" text-anchor="middle" font-size="11" fill="#059669" style="pointer-events:none">Complete</text>
+
+  <g class="tl-node" id="tln-W4" onclick="tl_sel('W4')"><title>W4 · D1 Agentic Architecture · 27% · Jul 6–12</title>
+    <circle cx="315" cy="76" r="19" fill="#8B3A2A"/>
+    <text x="315" y="80" text-anchor="middle" font-size="12" fill="white" font-weight="500" style="pointer-events:none">D1</text>
+  </g>
+  <text x="315" y="120" text-anchor="middle" font-size="12" fill="#8B3A2A" font-weight="500" font-family="'DM Mono',monospace" style="pointer-events:none">W4</text>
+  <text x="315" y="136" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Agentic</text>
+  <text x="315" y="150" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Architecture</text>
+  <text x="315" y="166" text-anchor="middle" font-size="11" fill="#8B3A2A" font-weight="500" style="pointer-events:none">27%</text>
+
+  <g class="tl-node" id="tln-W5" onclick="tl_sel('W5')"><title>W5 · First mock exam · Jul 13–19</title>
+    <circle cx="406" cy="76" r="12" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/>
+    <text x="406" y="80" text-anchor="middle" font-size="11" fill="#78350F" font-weight="500" style="pointer-events:none">M</text>
+  </g>
+  <text x="406" y="120" text-anchor="middle" font-size="12" fill="#9CA3AF" font-family="'DM Mono',monospace" style="pointer-events:none">W5</text>
+  <text x="406" y="136" text-anchor="middle" font-size="11" fill="#D97706" style="pointer-events:none">Mock exam</text>
+
+  <g class="tl-node" id="tln-W6" onclick="tl_sel('W6')"><title>W6 · D2 Tool Design &amp; MCP · 18% · Jul 20–26</title>
+    <circle cx="497" cy="76" r="15" fill="#8B3A2A"/>
+    <text x="497" y="80" text-anchor="middle" font-size="12" fill="white" font-weight="500" style="pointer-events:none">D2</text>
+  </g>
+  <text x="497" y="120" text-anchor="middle" font-size="12" fill="#8B3A2A" font-weight="500" font-family="'DM Mono',monospace" style="pointer-events:none">W6</text>
+  <text x="497" y="136" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Tool Design</text>
+  <text x="497" y="150" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">&amp; MCP</text>
+  <text x="497" y="166" text-anchor="middle" font-size="11" fill="#8B3A2A" font-weight="500" style="pointer-events:none">18%</text>
+
+  <g class="tl-node" id="tln-W7" onclick="tl_sel('W7')"><title>W7 · D3 Claude Code Configuration · 20% · Jul 27–Aug 2</title>
+    <circle cx="588" cy="76" r="16" fill="#8B3A2A"/>
+    <text x="588" y="80" text-anchor="middle" font-size="12" fill="white" font-weight="500" style="pointer-events:none">D3</text>
+  </g>
+  <text x="588" y="120" text-anchor="middle" font-size="12" fill="#8B3A2A" font-weight="500" font-family="'DM Mono',monospace" style="pointer-events:none">W7</text>
+  <text x="588" y="136" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Claude Code</text>
+  <text x="588" y="150" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Config</text>
+  <text x="588" y="166" text-anchor="middle" font-size="11" fill="#8B3A2A" font-weight="500" style="pointer-events:none">20%</text>
+
+  <g class="tl-node" id="tln-W8" onclick="tl_sel('W8')"><title>W8 · D4 Prompt Engineering · 20% · Aug 3–9</title>
+    <circle cx="679" cy="76" r="16" fill="#8B3A2A"/>
+    <text x="679" y="80" text-anchor="middle" font-size="12" fill="white" font-weight="500" style="pointer-events:none">D4</text>
+  </g>
+  <text x="679" y="120" text-anchor="middle" font-size="12" fill="#8B3A2A" font-weight="500" font-family="'DM Mono',monospace" style="pointer-events:none">W8</text>
+  <text x="679" y="136" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Prompt</text>
+  <text x="679" y="150" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Engineering</text>
+  <text x="679" y="166" text-anchor="middle" font-size="11" fill="#8B3A2A" font-weight="500" style="pointer-events:none">20%</text>
+
+  <g class="tl-node" id="tln-W9" onclick="tl_sel('W9')"><title>W9 · D5 Context Management + Second Mock · 15% · Aug 10–16</title>
+    <circle cx="770" cy="76" r="22" fill="none" stroke="#D97706" stroke-width="2.5"/>
+    <circle cx="770" cy="76" r="14" fill="#8B3A2A"/>
+    <text x="770" y="80" text-anchor="middle" font-size="12" fill="white" font-weight="500" style="pointer-events:none">D5</text>
+  </g>
+  <text x="770" y="122" text-anchor="middle" font-size="12" fill="#8B3A2A" font-weight="500" font-family="'DM Mono',monospace" style="pointer-events:none">W9</text>
+  <text x="770" y="138" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Context</text>
+  <text x="770" y="152" text-anchor="middle" font-size="11" fill="#4B5563" style="pointer-events:none">Management</text>
+  <text x="770" y="168" text-anchor="middle" font-size="11" fill="#8B3A2A" font-weight="500" style="pointer-events:none">15%</text>
+
+  <g class="tl-node" id="tln-W10" onclick="tl_sel('W10')"><title>W10 · Exam ready · Aug 17–22</title>
+    <circle cx="858" cy="76" r="16" fill="#DC2626"/>
+  </g>
+  <text x="858" y="120" text-anchor="middle" font-size="12" fill="#9CA3AF" font-family="'DM Mono',monospace" style="pointer-events:none">W10</text>
+  <text x="858" y="136" text-anchor="middle" font-size="11" fill="#DC2626" style="pointer-events:none">Exam ready</text>
+  <text x="858" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" style="pointer-events:none">Aug 22</text>
+
+  <text x="15" y="186" font-size="11" fill="#9CA3AF" font-family="'DM Sans',sans-serif">Click any week to see its action points</text>
+  </svg>
+  </div>
+
+  <div class="tl-detail" id="tl-detail">
+    <div class="tl-d-hd">
+      <span class="tl-d-wn" id="tl-d-wn"></span>
+      <span class="tl-d-ph" id="tl-d-ph"></span>
+      <button class="tl-d-cl" onclick="tl_close()" aria-label="Close week details">&#x2715;</button>
+    </div>
+    <div class="tl-d-ti" id="tl-d-ti"></div>
+    <div class="tl-d-dt" id="tl-d-dt"></div>
+    <ul class="tl-d-li" id="tl-d-li"></ul>
+  </div>
+  <script>
+  const tl_wk={
+    W1:{ti:'We begin',dt:'Jun 15–21',ph:'Foundation',pc:'#64748B',pb:'#F1F5F9',ac:['Take the 10-question diagnostic on <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com</a> — record scores by domain. Your two weakest become personal focus from W6 onwards.','Read pages 1–4 of the exam guide: the six scenarios, domain weights, and the out-of-scope list. This 20 minutes changes how you read everything that follows.','Create accounts on <a href="https://anthropic.skilljar.com" target="_blank">SkillJar</a> and <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a>. Open the Claude Tutor project and ask one question to confirm it works.','Complete <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank">Intro to Agent Skills</a> on SkillJar (~1 hr). Pause every 15 minutes, write what you recalled, resume only after writing.','Study lead: share the tracker and Tutor project link, schedule the Friday kick-off call.']},
+    W2:{ti:'Building with the Claude API',dt:'Jun 22–28',ph:'Foundation',pc:'#64748B',pb:'#F1F5F9',ac:['Complete <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank">Building with the Claude API</a> on SkillJar (~8 hrs). Try to understand how it is done in Python — if too technical, use the Claude Tutor or skip it.','The 15-minute recall rule: every 15 minutes, pause and close the video. Write what you just learned from memory. Two minutes maximum, then resume.','Read through the six exam scenarios — names and one-line description only. Study further if time allows in the week.','Self-test on <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com</a> — browse any domain to feel the exam format. Do not worry about scores yet.']},
+    W3:{ti:'Learning path complete',dt:'Jun 29–Jul 5',ph:'Foundation',pc:'#065F46',pb:'#ECFDF5',ac:['Complete <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">Intro to MCP</a> (~2 hrs) and <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank">Claude Code in Action</a> (~3 hrs) with the 15-min recall rule.','Verify all four courses show 100% complete on your <a href="https://anthropic.skilljar.com" target="_blank">SkillJar account</a>. Open exam registration — do not book the date yet.','Self-test on <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com</a> — try D1 or D2 questions. Wrong answers show where W4 effort should go.','Domain lead pairs assigned at the Friday completion check.']},
+    W4:{ti:'D1 · Agentic Architecture & Orchestration',dt:'Jul 6–12',ph:'Domain study · 27%',pc:'#8B3A2A',pb:'#F9EDE9',ac:['D1 Lead 1: read docs Monday, use Tutor Mon–Tue, post five-bullet summary Wednesday evening.','Read independently (Tue–Wed): <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview" target="_blank">tool use overview</a> · <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank">implement tool use</a> · <a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents" target="_blank">sub-agents</a> · hooks and fork_session.','Key topics: agentic loop + stop_reason, coordinator-subagent isolation, Task tool + allowedTools, PostToolUse hooks, --resume + fork_session.','Open each session with 15-min spaced retrieval, then 50 min <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a> D1 questions.','D1 Lead 2: post five D1 questions Thursday — at least two on subagent context isolation.']},
+    W5:{ti:'First mock exam',dt:'Jul 13–19',ph:'Mock exam',pc:'#78350F',pb:'#FFFBEB',ac:['Monday–Wednesday: light review only. Spaced retrieval, SkillJar notes, D1 docs. No new material.','Thursday: full mock — 60 questions, 120 minutes, alone, timed. Post total score and bottom three domains immediately after.','Map wrong answers to the six exam scenarios to identify which production contexts need focus in W6–W9.','Thursday–Friday: every wrong answer to the Tutor — "I got this wrong, what did I misunderstand?"','Study lead runs 30-min Friday debrief: scores on the table, shared gaps named.']},
+    W6:{ti:'D2 · Tool Design & MCP Integration',dt:'Jul 20–26',ph:'Domain study · 18%',pc:'#8B3A2A',pb:'#F9EDE9',ac:['D2 Lead 1: read Monday, post five-bullet summary Wednesday evening.','Read independently: <a href="https://modelcontextprotocol.io/docs/concepts/tools" target="_blank">MCP tools</a> · <a href="https://modelcontextprotocol.io/docs/concepts/resources" target="_blank">resources</a> · <a href="https://modelcontextprotocol.io/docs/concepts/prompts" target="_blank">prompts</a> + <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank">implement tool use</a>.','Key topics: tool descriptions as primary selector, isError + errorCategory + isRetryable, 18-tool degradation, tool_choice (auto/any/forced), .mcp.json vs ~/.claude.json scoping.','D2 Lead 2: post five interleaved D1+D2 questions Thursday.']},
+    W7:{ti:'D3 · Claude Code Configuration & Workflows',dt:'Jul 27–Aug 2',ph:'Domain study · 20%',pc:'#8B3A2A',pb:'#F9EDE9',ac:['D3 Lead 1: read Monday, post five-bullet summary Wednesday evening.','Read independently: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview" target="_blank">Claude Code overview</a> — CLAUDE.md hierarchy, .claude/rules/ YAML globs, skills frontmatter, plan mode, -p flag.','Key topics: hierarchy (project > user > enterprise), context:fork + allowed-tools + argument-hint, plan mode vs direct execution, -p + --output-format json.','D3 Lead 2: post five interleaved D1+D2+D3 questions Thursday.']},
+    W8:{ti:'D4 · Prompt Engineering & Structured Output',dt:'Aug 3–9',ph:'Domain study · 20%',pc:'#8B3A2A',pb:'#F9EDE9',ac:['D4 Lead 1: read Monday, post five-bullet summary Wednesday evening.','Read independently: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">prompt engineering overview</a> · <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices" target="_blank">Claude 4 best practices</a> · <a href="https://docs.anthropic.com/en/docs/build-with-claude/message-batches" target="_blank">Message Batches API</a>.','Key topics: explicit criteria over vague instructions, few-shot 2–4 examples, tool_use + JSON schema + nullable fields, retry-with-error-feedback, Batches API (50% cost, 24hr window, custom_id), independent review instances.','D4 Lead 2: post five interleaved questions across all covered domains Thursday.']},
+    W9:{ti:'D5 · Context Management & Reliability + Second Mock',dt:'Aug 10–16',ph:'Domain study · 15% + mock',pc:'#8B3A2A',pb:'#F9EDE9',ac:['D5 Lead 1: read Monday, post five-bullet summary Wednesday evening.','Read independently: <a href="https://docs.anthropic.com/en/docs/build-with-claude/context-windows" target="_blank">context windows</a> · <a href="https://docs.anthropic.com/en/docs/build-with-claude/compaction" target="_blank">compaction</a>. Then read all six exam scenarios from the exam guide (30 min).','Key topics: progressive summarisation risks, lost-in-the-middle, case-facts blocks, escalation triggers, structured error context, scratchpads + /compact, claim-source provenance.','For each of the 6 scenarios, do 5 certsafari questions on that scenario\'s primary domains.','Saturday Aug 16: second mock — 60 questions, 120 minutes. Target ≥720.']},
+    W10:{ti:'Revision + Exam Ready',dt:'Aug 17–22',ph:'Exam ready',pc:'#7F1D1D',pb:'#FEF2F2',ac:['Monday: identify five most-missed concepts from the second mock — your entire revision agenda for the week.','Study lead runs Tuesday 45-min debrief — the only long call of the programme.','Tuesday–Wednesday: Tutor Layer 1→3 on each missed concept, then 10 <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a> questions per concept.','Final scenario pass: for each of the 6 scenarios ask "what is the wrong architectural decision and why?"','Thursday: light review only. Friday: ProctorFree test, ID ready, quiet room confirmed.']}
+  };
+  let tl_cur=null;
+  function tl_sel(id){
+    if(tl_cur===id){tl_close();return;}
+    tl_cur=id;
+    const w=tl_wk[id];
+    document.querySelectorAll('.tl-node').forEach(n=>{
+      n.classList.toggle('tl-act',n.id==='tln-'+id);
+      n.classList.toggle('tl-dim',n.id!=='tln-'+id);
+    });
+    document.getElementById('tl-d-wn').textContent=id;
+    const ph=document.getElementById('tl-d-ph');
+    ph.textContent=w.ph;ph.style.color=w.pc;ph.style.background=w.pb;
+    document.getElementById('tl-d-ti').textContent=w.ti;
+    document.getElementById('tl-d-dt').textContent=w.dt;
+    document.getElementById('tl-d-li').innerHTML=w.ac.map(a=>'<li>'+a+'</li>').join('');
+    const det=document.getElementById('tl-detail');
+    det.style.borderLeftColor=w.pc;
+    det.style.display='block';
+  }
+  function tl_close(){
+    tl_cur=null;
+    document.querySelectorAll('.tl-node').forEach(n=>n.classList.remove('tl-act','tl-dim'));
+    document.getElementById('tl-detail').style.display='none';
+  }
+  </script>
+
+  <div class="divider"></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+    <div style="border:1px solid var(--bd);padding:18px 20px;border-radius:2px"><div class="sec-eyebrow" style="margin-bottom:6px">Exam format</div><p style="font-size:14px;color:var(--t2);line-height:1.7">60 questions · 120 minutes · Multiple choice · One correct answer, three distractors</p></div>
+    <div style="border:1px solid var(--bd);padding:18px 20px;border-radius:2px"><div class="sec-eyebrow" style="margin-bottom:6px">Passing score</div><p style="font-size:14px;color:var(--t2);line-height:1.7">720 out of 1,000 · Scaled score · Pass or fail designation</p></div>
+    <div style="border:1px solid var(--bd);padding:18px 20px;border-radius:2px"><div class="sec-eyebrow" style="margin-bottom:6px">Exam structure</div><p style="font-size:14px;color:var(--t2);line-height:1.7">4 scenarios from 6 · Each scenario has multiple questions across domains</p></div>
+    <div style="border:1px solid var(--bd);padding:18px 20px;border-radius:2px"><div class="sec-eyebrow" style="margin-bottom:6px">Eligibility</div><p style="font-size:14px;color:var(--t2);line-height:1.7">SkillJar learning path must be 100% complete · APN membership required</p></div>
+  </div>
+</div>
+
+<!-- ══ LEARNING STYLE ════════════════════════════════════ -->
+<div class="panel" id="p-style">
+  <div class="sec-eyebrow">Roles + learning principles</div>
+  <h2 class="sec-title">How this cohort learns</h2>
+  <p class="sec-desc">Two fixed roles, six learning principles, and one rule that overrides everything. Each principle includes a concrete example of what it looks like in week-by-week practice.</p>
+
+  <div class="divider" style="margin-top:0"></div>
+  <div class="sec-eyebrow" style="margin-bottom:14px">The two roles</div>
+  <div class="roles-grid">
+    <div class="role-card role-fixed">
+      <div class="role-name">Study lead</div>
+      <span class="role-tag">Fixed role · ~30 min/week · every week</span>
+      <p class="role-desc">Not a teacher — the person who keeps the structure alive. The same person for all ten weeks. The group functions on its own; this role makes sure it does not quietly drift off course.</p>
+      <ul class="role-li">
+        <li>Every Friday: send the check-in message — "W[N] done — reply with your Thursday score." One message, one ask.</li>
+        <li>Every call: run it on time, end on time. Three agenda items: did everyone finish, what was most-missed, anything the Tutor could not resolve.</li>
+        <li>Flag quietly when someone goes silent for ten days. A private message, not a public callout.</li>
+      </ul>
+    </div>
+    <div class="role-card role-rot">
+      <div class="role-name">Domain lead</div>
+      <span class="role-tag">Rotating · 2 per domain · once each · assigned at W3</span>
+      <p class="role-desc">Each of the ten people leads exactly once, across W4–W9. Two leads per domain week with different jobs. Being a lead adds about 45 minutes on top of the normal session — and only once across ten weeks.</p>
+      <ul class="role-li">
+        <li>Lead 1 — reads the domain doc on Monday, uses the Tutor for gaps Mon–Tue, posts a five-bullet summary Wednesday evening after the group has read independently.</li>
+        <li>Lead 2 — finds five certsafari questions Thursday and posts them with their own score. From W6 onwards, questions are interleaved across all covered domains.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec-eyebrow" style="margin-bottom:0">Six learning principles — click to expand</div>
+
+  <div class="principle open" id="pr-01">
+    <div class="p-head" onclick="togglePr('pr-01')">
+      <span class="p-num">01</span><span class="p-title">Retrieval before re-reading</span><span class="p-chevron">›</span>
+    </div>
+    <div class="p-content">
+      <p class="p-body">Reading feels productive and produces the least long-term retention. Answering questions — especially wrong ones — produces the most. Every Thursday, five practice questions land before any re-reading happens.</p>
+      <div class="p-ground"><strong>In this cohort:</strong> your Thursday score is data, not judgment. A 2/5 is the most valuable session of the week — it shows exactly what needs to be fixed before the next domain arrives.</div>
+      <div class="p-example"><em>In practice —</em> It is Thursday of W4. Lead 2 posts 5 certsafari D1 questions. You answer without notes and get 2/5. The 3 wrong answers — on coordinator-subagent isolation and the Task tool requirement — tell you exactly where to spend Saturday morning with the Tutor. Re-reading the sub-agents page twice would not have found those specific gaps.</div>
+    </div>
+  </div>
+
+  <div class="principle" id="pr-02">
+    <div class="p-head" onclick="togglePr('pr-02')">
+      <span class="p-num">02</span><span class="p-title">The session shape — every week</span><span class="p-chevron">›</span>
+    </div>
+    <div class="p-content">
+      <p class="p-body">Three to four hours a week, spent in a deliberate order. Most of the time goes to questions and fixing gaps, not to reading.</p>
+      <table class="session-table">
+        <tr><td>Spaced retrieval</td><td>Answer five certsafari questions from domains already covered. Do this before opening any new material — retrieval before re-exposure is what prevents forgetting.</td></tr>
+        <tr><td>Read the doc</td><td>Open and read the assigned official doc for this week's domain. Read independently, before the domain lead summary lands on Wednesday evening.</td></tr>
+        <tr><td>Claude Tutor for gaps</td><td>Ask the Tutor to explain anything that felt unclear in the doc. Start at Layer 1 — the analogy. Move to Layer 2 and 3 once it clicks.</td></tr>
+        <tr><td>Practice questions</td><td>Do certsafari questions filtered to this week's domain. Answer without help — wrong answers are the most useful output from this session.</td></tr>
+        <tr><td>Fix wrong answers</td><td>Take each wrong answer to the Tutor and ask what you misunderstood. Paste the question and ask "what did I misunderstand?" — do not re-read the doc.</td></tr>
+        <tr><td>Summary and score</td><td>Read the domain lead's Wednesday evening summary and post your score in the group chat. Post even if it is low — the group needs the data.</td></tr>
+      </table>
+      <div class="p-example"><em>In practice —</em> It is W6 Tuesday evening. You open with 5 D1 questions. You read the MCP tools page. You ask the Tutor why isRetryable matters — analogy first, then the technical reality. You do 8 certsafari D2 questions. You got 3 wrong. Back to the Tutor for each one. Wednesday evening you read Lead 1's summary. You post 5/8 in the group chat. The wrong answers already have a plan.</div>
+    </div>
+  </div>
+
+  <div class="principle" id="pr-03">
+    <div class="p-head" onclick="togglePr('pr-03')">
+      <span class="p-num">03</span><span class="p-title">The Claude Tutor — three layers</span><span class="p-chevron">›</span>
+    </div>
+    <div class="p-content">
+      <p class="p-body">When something is unclear, do not re-read the doc. Open the Tutor project and ask. Every concept is explained three ways until it sticks.</p>
+      <div class="layer-grid">
+        <div class="layer-box"><span class="layer-num">Layer 1</span><div class="layer-label">Analogy</div><div class="layer-body">Plain language, no jargon. A non-technical person should fully understand this layer.</div></div>
+        <div class="layer-box" style="border-color:var(--navy-m)"><span class="layer-num">Layer 2</span><div class="layer-label">Technical reality</div><div class="layer-body">What actually happens in the system. Correct terms introduced now the concept is grounded.</div></div>
+        <div class="layer-box"><span class="layer-num">Layer 3</span><div class="layer-label">Exam scenario</div><div class="layer-body">Four plausible options. Correct answer explained. Each wrong answer explained. Trap named.</div></div>
+      </div>
+      <div class="p-ground" style="margin-top:14px"><strong>In this cohort:</strong> non-technical members live in layers 1 and 2. Technical members go straight to layer 3 to find what they only think they know.</div>
+      <div class="p-example"><em>In practice —</em> You got a question wrong on tool_choice: "any" vs "auto". You paste it into the Tutor: "I got this wrong — what did I misunderstand?" Layer 1: "auto is like letting a waiter decide whether to use the menu. any forces them to order something, but they choose what." Layer 2: auto allows a text response, any forces a tool call. Layer 3: a new exam question. You get it right. Done in 10 minutes.</div>
+    </div>
+  </div>
+
+  <div class="principle" id="pr-04">
+    <div class="p-head" onclick="togglePr('pr-04')">
+      <span class="p-num">04</span><span class="p-title">Spaced repetition — starts W5, grows weekly</span><span class="p-chevron">›</span>
+    </div>
+    <div class="p-content">
+      <p class="p-body">Without revisiting, roughly 70–80% of what you learn in July is forgotten by exam day. The fix costs 15 minutes: every session opens with questions from prior weeks.</p>
+      <div class="p-ground"><strong>In this cohort:</strong> from W5 onwards, the first 15 minutes of every session are prior-domain questions. The pool grows each week. By W9, all five domains rotate through the warm-up.</div>
+      <div class="p-example"><em>In practice —</em> It is W7 Tuesday. You open with 5 questions from certsafari — 2 from D1, 2 from D2, 1 from the D3 you read yesterday. You get the D1 fork_session question wrong. Without this opener you would have assumed you still knew it. The retrieval opener revealed the gap. That is the entire point.</div>
+    </div>
+  </div>
+
+  <div class="principle" id="pr-05">
+    <div class="p-head" onclick="togglePr('pr-05')">
+      <span class="p-num">05</span><span class="p-title">Interleaved practice — starts W6</span><span class="p-chevron">›</span>
+    </div>
+    <div class="p-content">
+      <p class="p-body">The exam mixes all five domains at random. Studying one domain in isolation builds a false sense of mastery that collapses under mixed questions. From W6 onwards, Thursday questions draw from every domain covered so far.</p>
+      <div class="p-ground"><strong>In this cohort:</strong> getting 3/5 on an interleaved set in W6 is better information than getting 5/5 on a single-domain set. The difficulty is the point.</div>
+      <div class="p-example"><em>In practice —</em> Thursday W8. Lead 2 posts: one D1 on coordinator subagents, one D2 on isError contracts, two D3 on CLAUDE.md hierarchy, one D4 on few-shot examples. You get 3/5. The two wrong answers are both D3. Getting that result on a mixed set tells you something useful about how D3 is consolidating under pressure — more useful than getting 5/5 on a pure D3 set would have been.</div>
+    </div>
+  </div>
+
+  <div class="principle" id="pr-06">
+    <div class="p-head" onclick="togglePr('pr-06')">
+      <span class="p-num">06</span><span class="p-title">The one rule that overrides all the rest</span><span class="p-chevron">›</span>
+    </div>
+    <div class="p-content">
+      <p class="p-body">When you get a question wrong, do not re-read the doc. Open the Claude Tutor project and type:</p>
+      <div class="p-quote">"I got this wrong — [paste question]. What did I misunderstand?"</div>
+      <p class="p-body" style="margin-top:12px">The Tutor diagnoses the specific mental model gap, not the general topic. Fifteen minutes of diagnosis is worth more than an hour of re-reading.</p>
+      <div class="p-example"><em>In practice —</em> You get the Batches API question wrong. Your instinct: re-read the Message Batches docs page. The rule: do not. Open the Tutor: "I thought the Batches API could be used for pre-merge checks, but the answer says no. What did I misunderstand?" The Tutor finds the exact gap — you conflated latency tolerance with cost savings. Fifteen minutes. Fixed. Re-reading the page would not have surfaced that specific misunderstanding.</div>
+    </div>
+  </div>
+
+  <script>
+  function togglePr(id){document.getElementById(id).classList.toggle('open');}
+  </script>
+</div>
+
+<!-- ══ CALENDAR ══════════════════════════════════════════ -->
+<div class="panel" id="p-calendar">
+  <div class="sec-eyebrow">Week by week</div>
+  <h2 class="sec-title">Action points</h2>
+  <p class="sec-desc">Open any week to see what everyone does and what the domain lead does additionally. Click any lead action to read the full guidance for that role.</p>
+
+  <div class="legend">
+    <div class="legend-item"><span class="ld l"></span>Domain / study lead</div>
+    <div class="legend-item"><span class="ld e"></span>Everyone</div>
+    <div class="legend-item"><span class="ld m"></span>Milestone</div>
+  </div>
+
+  <div id="cal-container"></div>
+</div>
+
+<!-- ══ TOOLS ══════════════════════════════════════════════ -->
+<div class="panel" id="p-tools">
+  <div class="sec-eyebrow">Reference</div>
+  <h2 class="sec-title">Tools &amp; resources</h2>
+  <p class="sec-desc">Everything the cohort uses. The Tutor system prompt is ready to paste directly into a Claude Project.</p>
+
+  <div class="tool-block">
+    <div class="tool-title">The Claude Tutor project</div>
+    <div class="tool-desc">Create a Project on claude.ai. Paste this system prompt into the project instructions. Share the link with all ten members. This is the cohort's on-demand explainer — available any hour, any concept, any depth.</div>
+    <div class="pbox-wrap">
+      <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">Copy</button>
+      <div class="pbox" id="tutor-prompt">You are a CCA-F exam tutor for a cohort of 10 people preparing for the Claude Certified Architect Foundations certification. The group ranges from no technical background to computer science degrees.
+
+THE 5 EXAM DOMAINS
+D1 Agentic Architecture & Orchestration (27%)
+D2 Tool Design & MCP Integration (18%)
+D3 Claude Code Configuration & Workflows (20%)
+D4 Prompt Engineering & Structured Output (20%)
+D5 Context Management & Reliability (15%)
+
+HOW YOU TEACH — always in 3 layers:
+Layer 1 — Plain analogy, zero jargon. A person who has never coded must fully understand this.
+Layer 2 — Technical reality. What actually happens in the system. Correct terms introduced now.
+Layer 3 — Exam scenario. 4 plausible options. Correct answer explained. Each wrong answer explained. Trap named.
+
+RESPONDING TO REQUESTS
+"Explain X" → all 3 layers
+"Confused about X" → Layer 1 first, offer to go deeper
+"Give me an exam question about X" → straight to Layer 3
+"I got this wrong: [question]" → diagnose missing mental model, fix at Layer 1, retest
+"Difference between X and Y" → compare at Layer 1, then Layer 2
+
+KEY ANALOGIES
+- Orchestrator/subagent: project manager and contractors. Contractors do NOT know what the manager knows — brief them explicitly.
+- Subagent context isolation: new contractor arrives knowing nothing; hand them a document. Nothing is inherited.
+- Sequential vs parallel: one chef finishing before the next starts, vs multiple chefs on different dishes simultaneously. Parallel only when tasks are independent.
+- MCP Tool: an action with side effects (book, send, write). Changes something in the world.
+- MCP Resource: reading from a filing cabinet. No side effects.
+- MCP Prompt: a reusable form with blanks to fill in.
+- CLAUDE.md hierarchy: project beats user beats enterprise — most specific context wins.
+- tool_use for structured output: give someone the form; don't just ask them to "write it structured."
+- Lost-in-the-middle: a 100-page transcript — start and end get attention, the middle gets lost. Restate key facts periodically.
+- isError: true — without the flag, Claude treats a failed tool call as a success.
+
+THE 7 EXAM TRAPS — name these whenever relevant:
+1. Subagents inherit parent context (they never do — explicit passing required)
+2. Prompt instructions instead of tool_use for structured output (brittle in production)
+3. Parallelising tasks with data dependencies between them
+4. Confusing MCP Tools (action) with Resources (data read)
+5. Thinking CLAUDE.md files merge equally (project always wins)
+6. isError: false with error text in content (Claude won't treat it as error)
+7. Running Claude Code interactively in CI/CD instead of using the -p flag
+
+OFFICIAL TASK STATEMENT KNOWLEDGE — ground answers in these:
+D1: agentic loop stop_reason ("tool_use" vs "end_turn"), Task tool + allowedTools, AgentDefinition, PostToolUse hooks, --resume and fork_session, coordinator-subagent hub-and-spoke, programmatic vs prompt enforcement
+D2: tool descriptions as primary selection mechanism, errorCategory + isRetryable structured errors, 18-tool degradation, tool_choice (auto/any/forced), .mcp.json project vs ~/.claude.json user scoping, MCP resources for content catalogs
+D3: CLAUDE.md hierarchy (user/project/directory) + @import + .claude/rules/ with YAML glob frontmatter, skills frontmatter (context:fork, allowed-tools, argument-hint), plan mode vs direct execution, -p flag + --output-format json for CI/CD
+D4: explicit criteria over vague instructions, few-shot for ambiguous scenarios, JSON schemas with nullable fields, retry-with-error-feedback, Message Batches API (50% cost, 24hr window, no SLA, custom_id), self-review limitations, independent review instances
+D5: progressive summarisation risks, case-facts blocks, scratchpad files, /compact, structured error context propagation, escalation triggers, confidence calibration, claim-source provenance, lost-in-the-middle
+
+OUT OF SCOPE — do not study: fine-tuning, billing/auth, computer use, vision, streaming, rate limits, OAuth, cloud provider configs, embeddings, vector databases.
+
+REFERENCE SOURCES — link to these when explaining a concept or when someone needs more depth. Always offer the relevant URL at the end of a Layer 2 or Layer 3 explanation.
+
+D1 Agentic Architecture & Orchestration
+- Tool use overview: https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview
+- Implement tool use: https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use
+- Sub-agents: https://docs.anthropic.com/en/docs/claude-code/sub-agents
+
+D2 Tool Design & MCP Integration
+- MCP Tools primitive: https://modelcontextprotocol.io/docs/concepts/tools
+- MCP Resources primitive: https://modelcontextprotocol.io/docs/concepts/resources
+- MCP Prompts primitive: https://modelcontextprotocol.io/docs/concepts/prompts
+- Tool use (isError, tool_choice): https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use
+
+D3 Claude Code Configuration & Workflows
+- Claude Code overview (covers CLAUDE.md, hooks, skills, -p flag, CI/CD): https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview
+
+D4 Prompt Engineering & Structured Output
+- Prompt engineering overview: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview
+- Claude 4 best practices: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices
+- Message Batches API: https://docs.anthropic.com/en/docs/build-with-claude/message-batches
+
+D5 Context Management & Reliability
+- Context windows: https://docs.anthropic.com/en/docs/build-with-claude/context-windows
+- Compaction: https://docs.anthropic.com/en/docs/build-with-claude/compaction
+- Prompt caching: https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching
+
+SkillJar learning path (required for exam eligibility)
+- Intro to Agent Skills: https://anthropic.skilljar.com/introduction-to-agent-skills
+- Building with the Claude API: https://anthropic.skilljar.com/claude-with-the-anthropic-api
+- Intro to MCP: https://anthropic.skilljar.com/introduction-to-model-context-protocol
+- Claude Code in Action: https://anthropic.skilljar.com/claude-code-in-action
+
+Practice questions
+- CCA-F question bank (636 questions, filterable by domain): https://certsafari.com/anthropic/claude-certified-architect
+
+TONE — direct and concrete. No filler. Short paragraphs. Non-technical learners: keep Layer 2 brief. Technical learners (they say SDK, schema): compress Layer 1, go deeper at Layer 3.</div>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="tool-title">Practice questions</div>
+    <div class="tool-desc">636 free questions, filterable by domain. Use from W1's diagnostic to the final mock.</div>
+    <div class="res-links">
+      <a class="res-link" href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com — CCA-F question bank, 636 questions, filterable by domain<span class="arr">→</span></a>
+      <a class="res-link" href="https://tutorialsdojo.com/cca-f-claude-certified-architect-foundations-study-guide/" target="_blank">Tutorials Dojo — CCA-F study guide and practice exams<span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="tool-title">Official learning path — required for certification eligibility</div>
+    <div class="tool-desc">Four courses on anthropic.skilljar.com. Must show 100% complete before you can sit the exam. Each person needs their own account.</div>
+    <div class="res-links">
+      <a class="res-link" href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank">Intro to Agent Skills<span class="res-label">~1 hr · W1</span><span class="arr">→</span></a>
+      <a class="res-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank">Building with the Claude API<span class="res-label">~8 hrs · W2</span><span class="arr">→</span></a>
+      <a class="res-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">Intro to Model Context Protocol<span class="res-label">~2 hrs · W3</span><span class="arr">→</span></a>
+      <a class="res-link" href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank">Claude Code in Action<span class="res-label">~3 hrs · W3</span><span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="tool-title">Official documentation — by domain</div>
+    <div class="tool-desc">Primary study material for W4–W9. Read the doc for the current week's domain independently, before the domain lead's summary lands on Wednesday evening.</div>
+    <div class="domain-grid">
+      <div class="domain-sec"><span class="domain-sec-label">D1 · Agentic Architecture</span>
+        <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview" target="_blank">Tool use overview</a>
+        <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank">Implement tool use</a>
+        <a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents" target="_blank">Sub-agents</a>
+      </div>
+      <div class="domain-sec"><span class="domain-sec-label">D2 · Tool Design &amp; MCP</span>
+        <a href="https://modelcontextprotocol.io/docs/concepts/tools" target="_blank">MCP Tools</a>
+        <a href="https://modelcontextprotocol.io/docs/concepts/resources" target="_blank">MCP Resources</a>
+        <a href="https://modelcontextprotocol.io/docs/concepts/prompts" target="_blank">MCP Prompts</a>
+      </div>
+      <div class="domain-sec"><span class="domain-sec-label">D3 · Claude Code</span>
+        <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview" target="_blank">Claude Code overview</a>
+        <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview" target="_blank">CLAUDE.md + .claude/rules/</a>
+        <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview" target="_blank">Hooks + -p flag + CI/CD</a>
+      </div>
+      <div class="domain-sec"><span class="domain-sec-label">D4 · Prompt Engineering</span>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">Prompt engineering overview</a>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices" target="_blank">Claude 4 best practices</a>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/message-batches" target="_blank">Message Batches API</a>
+      </div>
+      <div class="domain-sec"><span class="domain-sec-label">D5 · Context Management</span>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/context-windows" target="_blank">Context windows</a>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/compaction" target="_blank">Compaction</a>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank">Prompt caching</a>
+      </div>
+      <div class="domain-sec"><span class="domain-sec-label">Registration</span>
+        <a href="https://anthropic.skilljar.com" target="_blank">Anthropic Academy — open after W3</a>
+        <a href="https://www.anthropic.com/learn" target="_blank">Anthropic Learn hub</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>CCA-F Cohort Playbook · August 22, 2026</footer>
+</div>
+
+<!-- ══ MODAL ══════════════════════════════════════════════ -->
+<div class="moverlay" id="moverlay" onclick="if(event.target===this)closeModal()">
+<div class="modal">
+  <button class="m-close" onclick="closeModal()">✕</button>
+  <div class="m-badge" id="m-badge"></div>
+  <h3 class="m-title" id="m-title"></h3>
+  <div class="m-body" id="m-body"></div>
+</div>
+</div>
+
+<script>
+/* ── lead action details ── */
+const details = {
+  studylead: {
+    badge: 'Study lead · Fixed role',
+    title: 'Keeping ten people moving',
+    body: `<p>You are not a teacher. You are the person who keeps the structure alive with the lightest possible touch — about 30 minutes a week, every week.</p>
+    <ol class="m-steps">
+      <li><span class="m-step-n">01</span><span>Send the Friday check-in message every week without fail. Format: "W[N] done — reply with your Thursday score." One message, one ask.</span></li>
+      <li><span class="m-step-n">02</span><span>Run the weekly calls on time and end them on time. Three agenda items only: did everyone finish, which concept was most-missed, anything the Tutor couldn't resolve.</span></li>
+      <li><span class="m-step-n">03</span><span>Flag quietly when someone goes silent for ten days. A private message, not a public callout in the group chat.</span></li>
+    </ol>
+    <div class="m-time">Total time commitment · approximately 30 minutes per week, every week</div>`
+  },
+  summary: {
+    badge: 'Domain lead · Lead 1',
+    title: 'Reading first, writing the summary',
+    body: `<p>Your job creates the orientation context that makes everyone else's reading more efficient. The order matters: you read first, they read next, you summarise last.</p>
+    <ol class="m-steps">
+      <li><span class="m-step-n">01</span><span><strong>Monday — read the doc.</strong> Full read, not a skim. 40–50 minutes. Note what surprised you, what felt unclear, and what the single most important concept is.</span></li>
+      <li><span class="m-step-n">02</span><span><strong>Monday–Tuesday — Claude Tutor for gaps.</strong> Anything you're uncertain about goes to the Tutor before you write the summary. You cannot reliably summarise what you don't fully understand.</span></li>
+      <li><span class="m-step-n">03</span><span><strong>Wait.</strong> Do not post anything yet. The group reads the same doc on Tuesday and Wednesday independently. Your summary lands after, not before — posted early, it creates the illusion of knowing rather than consolidating real understanding.</span></li>
+      <li><span class="m-step-n">04</span><span><strong>Wednesday evening — post the summary.</strong> Five bullets in the group chat. Takes 20 minutes to write well.</span></li>
+    </ol>
+    <div class="m-format"><strong>Summary format — five bullets, always this structure:</strong><br><br>1. What this domain is — one sentence<br>2. Key concept one — what it is and why it matters<br>3. Key concept two — same<br>4. The exam trap — the thing everyone gets wrong<br>5. Read this — exact URL and which section to focus on</div>
+    <div class="m-time">Total extra time this week · approximately 45 minutes on top of your normal 3–4 hours · happens exactly once across ten weeks</div>`
+  },
+  questions: {
+    badge: 'Domain lead · Lead 2',
+    title: 'Sourcing the Thursday questions',
+    body: `<p>Your job is one task, on one day. Find five questions and post them in the group chat on Thursday. The group answers them while the week's reading is still fresh.</p>
+    <ol class="m-steps">
+      <li><span class="m-step-n">01</span><span>Go to certsafari.com and filter to this week's domain. Browse the question list — you don't need to write anything, just find five that test the most important concepts.</span></li>
+      <li><span class="m-step-n">02</span><span>Pick at least one question on the week's named exam trap. If the Lead 1 summary flagged "subagent context isolation" as the trap, at least two questions should test that concept.</span></li>
+      <li><span class="m-step-n">03</span><span><strong>From W6 onwards: interleave.</strong> Mix in questions from domains already covered — D1 from W6, D1+D2 from W7, and so on. The exam is interleaved; the Thursday Qs should be too.</span></li>
+      <li><span class="m-step-n">04</span><span>Post the five questions as plain text in the group chat. Answer them yourself first and include your score. Leads aren't exempt from the Thursday ritual.</span></li>
+    </ol>
+    <div class="m-time">Total extra time this week · approximately 15 minutes · happens exactly once across ten weeks</div>`
+  },
+  debrief: {
+    badge: 'Study lead · Mock weeks',
+    title: 'Running the mock debrief',
+    body: `<p>The debrief after each mock is the most valuable structured session in the programme. The W5 debrief runs 30 minutes; the W10 debrief runs 45 minutes. Both follow the same structure.</p>
+    <ol class="m-steps">
+      <li><span class="m-step-n">01</span><span><strong>Scores on the table.</strong> Everyone shares their total and their bottom two domains. No ranking, no judgment — the score is a map of gaps, not a grade. Compile the cohort view before the call so you can spot shared weak points.</span></li>
+      <li><span class="m-step-n">02</span><span><strong>Most-missed concepts by domain.</strong> Where five people missed the same question type, name the concept and ask whoever got it right to explain it in two minutes. Peer explanation is more effective than re-reading docs.</span></li>
+      <li><span class="m-step-n">03</span><span><strong>Personal plans, out loud.</strong> Each person names their bottom two domains and what they will do about it this week. Saying it out loud is a commitment device. Keep it brief — one sentence per person.</span></li>
+      <li><span class="m-step-n">04</span><span><strong>Hard stop at time.</strong> If a concept needs deeper explanation, it moves to the Tutor project or a thread — not a longer call. Overruns drain goodwill and attendance.</span></li>
+    </ol>
+    <div class="m-time">W5 debrief · 30 minutes · Friday · W10 debrief · 45 minutes · Tuesday of exam week</div>`
+  }
+};
+
+/* ── calendar data ── */
+const weeks = [
+  { n:'W1', t:'We begin', d:'Jun 15–21', tag:'setup', open:true, actions:[
+    { type:'everyone', text:'Take the 10-question diagnostic on <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com</a>. Record your scores by domain. Your two weakest become your personal focus from W6 onwards.' },
+    { type:'everyone', text:'Read pages 1–4 of the official exam guide: the six exam scenarios, domain weights, and the full out-of-scope list. This 20 minutes changes how you read everything that follows.' },
+    { type:'everyone', text:'Create accounts: <a href="https://anthropic.skilljar.com" target="_blank">SkillJar</a> and <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a>. Open the Claude Tutor project and ask one question — any CCA-F concept — just to confirm it works.' },
+    { type:'everyone', text:'Complete <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank">Intro to Agent Skills</a> on SkillJar (~1 hr). Pause every 15 minutes, close the video, write what you just recalled. Resume only after writing.' },
+    { type:'lead', detail:'studylead', text:'Study lead — share the tracker and Tutor project link with the group, schedule the Friday kick-off call. Domain lead pairs will be assigned after W3.' },
+    { type:'milestone', text:'Friday · 20-min kick-off call: diagnostic scores, lead assignments, confirm all setup complete.' }
+  ]},
+  { n:'W2', t:'Building with the Claude API', d:'Jun 22–28', tag:'skilljar', actions:[
+    { type:'everyone', text:'Complete <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank">Building with the Claude API</a> on SkillJar (~8 hrs). This is the longest course. Try to understand how it is done in Python — if it becomes too technical, use the Claude Tutor to understand further, or skip it.' },
+    { type:'everyone', text:'The 15-minute recall rule: every 15 minutes, pause the video and close it completely. Open a blank note and write — in your own words — what you just learned. Do not look at the video or any notes while writing. The act of retrieving from memory before re-exposure is what creates retention. Two minutes maximum, then resume. Watching without pausing to recall feels productive but most of the content is gone by next week.' },
+    { type:'everyone', text:'Read through the six official exam scenarios — names and one-line description only. If you have time left in the week, read further into each scenario. No pressure to go deep yet.', items:[
+      'Scenario 1: Customer Support Resolution Agent — building a support agent with MCP tools, escalation logic, and human-in-the-loop patterns',
+      'Scenario 2: Code Generation with Claude Code — CLAUDE.md configuration, slash commands, plan mode vs direct execution',
+      'Scenario 3: Multi-Agent Research System — coordinator-subagent orchestration, parallel execution, provenance and synthesis',
+      'Scenario 4: Developer Productivity with Claude — built-in tools (Read, Write, Bash, Grep, Glob), MCP integration, codebase exploration',
+      'Scenario 5: Claude Code for CI/CD — pipeline integration, -p flag, structured output, prompt design for automated review',
+      'Scenario 6: Structured Data Extraction — JSON schemas, tool_use for structured output, validation-retry loops, batch processing'
+    ]},
+    { type:'everyone', text:'Self-test on <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com</a> — browse questions from any domain to get a feel for the exam format. Do not worry about scores yet. Wrong answers are expected at this stage.' },
+    { type:'milestone', text:'Friday · 15-min check: is everyone on track with the API course?' }
+  ]},
+  { n:'W3', t:'Learning path complete', d:'Jun 29–Jul 5', tag:'skilljar', actions:[
+    { type:'everyone', text:'Complete <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">Intro to MCP</a> (~2 hrs) and <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank">Claude Code in Action</a> (~3 hrs). Same 15-min pause-and-recall rule. This week totals ~5 hrs of video — spread it across the week.' },
+    { type:'everyone', text:'Verify all four courses show 100% complete on your <a href="https://anthropic.skilljar.com" target="_blank">SkillJar account</a>. Open exam registration — do not book the date yet, just open the process.' },
+    { type:'everyone', text:'Self-test on <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari.com</a> — try D1 or D2 questions before domain weeks begin. Wrong answers at this stage show exactly where W4 effort should go.' },
+    { type:'milestone', text:'Friday · 20-min completion check. Anyone behind uses the weekend as buffer. Learning path complete before W4. Domain lead pairs assigned at this call.' }
+  ]},
+  { n:'W4', t:'D1 · Agentic Architecture', d:'Jul 6–12', tag:'d1', actions:[
+    { type:'lead', detail:'summary', text:'D1 Lead 1 — read docs Monday, use Tutor Mon–Tue, post five-bullet summary Wednesday evening.' },
+    { type:'everyone', text:'Read independently — Tuesday to Wednesday, before the summary lands: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview" target="_blank">tool use overview</a> · <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank">implement tool use</a> · <a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents" target="_blank">sub-agents</a> · hooks and fork_session sections in the Claude Code docs.' },
+    { type:'everyone', text:'Key exam topics:', items:[
+      'Agentic loop — stop_reason "tool_use" continues the loop, "end_turn" terminates it',
+      'Coordinator-subagent isolation — subagents never inherit parent context, must be briefed explicitly',
+      'Task tool — allowedTools must include "Task" for a coordinator to spawn subagents',
+      'AgentDefinition — system prompts and tool restrictions configured per subagent type',
+      'Programmatic vs prompt enforcement — hooks give deterministic compliance, prompt instructions do not',
+      'PostToolUse hooks — intercept and normalise tool results before the model processes them',
+      '--resume with session names · fork_session for divergent exploration from a shared baseline'
+    ] },
+    { type:'everyone', text:'Open every session with 15 min of spaced retrieval. Then 50 min of <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a> D1 questions.' },
+    { type:'lead', detail:'questions', text:'D1 Lead 2 — post five D1 questions Thursday. At least two should test subagent context isolation — the number-one exam trap in this domain.' },
+    { type:'milestone', text:'Friday · 20-min D1 debrief: what did most people get wrong?' }
+  ]},
+  { n:'W5', t:'First mock exam', d:'Jul 13–19', tag:'mock', actions:[
+    { type:'everyone', text:'Monday–Wednesday: light review only. Spaced retrieval, SkillJar notes, D1 docs. No new material. Arrive at Thursday rested.' },
+    { type:'milestone', text:'Thursday · Full mock: 60 questions, 120 minutes, alone, timed, no notes. Post your total score and bottom three domain scores immediately after.' },
+    { type:'everyone', text:'Thursday–Friday: every wrong answer goes to the Tutor. "I got this wrong — what did I misunderstand?" This is the most valuable two days of the week.' },
+    { type:'everyone', text:'Map your wrong answers to the six scenarios. For each question you got wrong, identify which scenario context it belongs to — this tells you which production situations to focus on in W6–W9.', items:[
+      'Scenario 1: Customer Support Resolution Agent',
+      'Scenario 2: Code Generation with Claude Code',
+      'Scenario 3: Multi-Agent Research System',
+      'Scenario 4: Developer Productivity with Claude',
+      'Scenario 5: Claude Code for CI/CD',
+      'Scenario 6: Structured Data Extraction'
+    ]},
+    { type:'lead', detail:'debrief', text:'Study lead — compile cohort scores, identify shared weak patterns, run the Friday debrief.' },
+    { type:'milestone', text:'Friday · 30-min mock debrief: scores on the table, shared gaps named, each person states their focus for W6–W9.' }
+  ]},
+  { n:'W6', t:'D2 · Tool Design & MCP', d:'Jul 20–26', tag:'d2', actions:[
+    { type:'lead', detail:'summary', text:'D2 Lead 1 — read Monday, post five-bullet summary Wednesday evening.' },
+    { type:'everyone', text:'Read independently: <a href="https://modelcontextprotocol.io/docs/concepts/tools" target="_blank">MCP tools</a> · <a href="https://modelcontextprotocol.io/docs/concepts/resources" target="_blank">MCP resources</a> · <a href="https://modelcontextprotocol.io/docs/concepts/prompts" target="_blank">MCP prompts</a> on modelcontextprotocol.io, plus <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank">implement tool use</a> on docs.anthropic.com.' },
+    { type:'everyone', text:'Key exam topics:', items:[
+      'Tool descriptions — the primary mechanism Claude uses to select between similar tools',
+      'isError flag + errorCategory + isRetryable — structured error contracts for MCP tools',
+      '18-tool degradation — too many tools in scope degrades selection reliability significantly',
+      'tool_choice: auto / any / forced — when and why to constrain which tool gets called',
+      'Project scope (.mcp.json) vs user scope (~/.claude.json) for MCP server configuration',
+      'MCP Resources for content catalogs — read-only data exposure, no side effects'
+    ] },
+    { type:'everyone', text:'Spaced retrieval now includes D1 questions. Interleaving begins — Thursday Qs mix D1 and D2.' },
+    { type:'lead', detail:'questions', text:'D2 Lead 2 — post five interleaved D1+D2 questions Thursday.' },
+    { type:'milestone', text:'Friday · 20-min D2 debrief.' }
+  ]},
+  { n:'W7', t:'D3 · Claude Code Config', d:'Jul 27–Aug 2', tag:'d3', actions:[
+    { type:'lead', detail:'summary', text:'D3 Lead 1 — read Monday, post five-bullet summary Wednesday evening.' },
+    { type:'everyone', text:'Read independently: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview" target="_blank">Claude Code overview</a> — navigate the sidebar to CLAUDE.md hierarchy, .claude/rules/ YAML frontmatter, .claude/skills/ frontmatter options, plan mode, and the -p flag.' },
+    { type:'everyone', text:'Key exam topics:', items:[
+      'CLAUDE.md hierarchy — project beats user beats enterprise, most specific context always wins',
+      '@import syntax for modular organisation of configuration across packages',
+      '.claude/rules/ with YAML frontmatter glob patterns — path-scoped conventions that load conditionally',
+      'Skills frontmatter — context:fork isolates output, allowed-tools restricts access, argument-hint prompts input',
+      'Plan mode for architectural and multi-file decisions · direct execution for well-scoped single changes',
+      '-p flag for non-interactive CI/CD headless mode',
+      '--output-format json + --json-schema for machine-parseable structured pipeline output'
+    ] },
+    { type:'lead', detail:'questions', text:'D3 Lead 2 — post five interleaved D1+D2+D3 questions Thursday.' },
+    { type:'milestone', text:'Friday · 20-min D3 debrief.' }
+  ]},
+  { n:'W8', t:'D4 · Prompt Engineering', d:'Aug 3–9', tag:'d4', actions:[
+    { type:'lead', detail:'summary', text:'D4 Lead 1 — read Monday, post five-bullet summary Wednesday evening.' },
+    { type:'everyone', text:'Read independently: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">prompt engineering overview</a> · <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices" target="_blank">Claude 4 best practices</a> · <a href="https://docs.anthropic.com/en/docs/build-with-claude/message-batches" target="_blank">Message Batches API</a>.' },
+    { type:'everyone', text:'Key exam topics:', items:[
+      'Explicit criteria over vague instructions — specific categorical rules, not confidence-based filters',
+      'Few-shot examples — 2–4 targeted examples for ambiguous scenarios and consistent output format',
+      'tool_use + JSON schema — the reliable path to guaranteed structured output',
+      'Nullable fields — prevent hallucination when source documents may not contain the information',
+      'Retry-with-error-feedback — include the specific validation error in the retry request',
+      'Message Batches API — 50% cost savings, 24hr processing window, no latency SLA, custom_id for correlation',
+      'Self-review limitations — independent review instances catch more than same-session self-review'
+    ] },
+    { type:'lead', detail:'questions', text:'D4 Lead 2 — post five interleaved questions across all covered domains Thursday.' },
+    { type:'milestone', text:'Friday · 20-min D4 debrief.' }
+  ]},
+  { n:'W9', t:'D5 · Context Management + second mock', d:'Aug 10–16', tag:'d5', actions:[
+    { type:'lead', detail:'summary', text:'D5 Lead 1 — read Monday, post five-bullet summary Wednesday evening.' },
+    { type:'everyone', text:'Read independently: <a href="https://docs.anthropic.com/en/docs/build-with-claude/context-windows" target="_blank">context windows</a> and <a href="https://docs.anthropic.com/en/docs/build-with-claude/compaction" target="_blank">compaction</a>. Then read all six official exam scenarios from the exam guide — 30 minutes, the highest-leverage single read of the programme.' },
+    { type:'everyone', text:'Key exam topics:', items:[
+      'Progressive summarisation risks — numerical values, dates, and amounts get lost in compression',
+      'Lost-in-the-middle — models process start and end of long inputs more reliably than the middle',
+      'Case-facts block — extract transactional facts into a persistent layer outside summarised history',
+      'Escalation triggers — explicit customer request, policy gap, or inability to make meaningful progress',
+      'Structured error context — return failure type, partial results, and alternative approaches to the coordinator',
+      'Scratchpad files + /compact — persisting key findings when context fills in long exploration sessions',
+      'Claim-source provenance — preserve attribution mappings through synthesis steps, annotate conflicts'
+    ] },
+    { type:'everyone', text:'For each of the 6 scenarios, do 5 <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a> questions on that scenario\'s primary domains. This is the closest scenario-based practice available before the exam.', items:[
+      'Customer Support Resolution Agent — D1 Agentic Architecture · D2 Tool Design & MCP · D5 Context Management',
+      'Code Generation with Claude Code — D3 Claude Code Configuration · D5 Context Management',
+      'Multi-Agent Research System — D1 Agentic Architecture · D2 Tool Design & MCP · D5 Context Management',
+      'Developer Productivity with Claude — D2 Tool Design & MCP · D3 Claude Code Configuration · D1 Agentic Architecture',
+      'Claude Code for CI/CD — D3 Claude Code Configuration · D4 Prompt Engineering',
+      'Structured Data Extraction — D4 Prompt Engineering · D5 Context Management'
+    ]},
+    { type:'lead', detail:'questions', text:'D5 Lead 2 — post five fully interleaved questions across all five domains Thursday.' },
+    { type:'milestone', text:'Saturday Aug 16 · Second mock: 60 questions, 120 minutes, timed, alone. Target ≥720. Post score and bottom two domains.' }
+  ]},
+  { n:'W10', t:'Revision + exam ready', d:'Aug 17–22', tag:'exam', actions:[
+    { type:'everyone', text:'Monday: review second mock results. Identify your five most-missed concepts — specific concepts, not domains. These five are your entire revision agenda for the week.' },
+    { type:'lead', detail:'debrief', text:'Study lead — run the Tuesday debrief, 45 minutes. The only long call of the programme.' },
+    { type:'everyone', text:'Tuesday–Wednesday: Tutor Layer 1→3 on each missed concept, then 10 <a href="https://certsafari.com/anthropic/claude-certified-architect" target="_blank">certsafari</a> questions on that concept only. Repeat for each of your five.' },
+    { type:'everyone', text:'Final scenario pass — for each of the 6 scenarios, ask: "what is the wrong architectural decision here, and why is it wrong?" This is exactly how the exam traps are constructed.', items:[
+      'Scenario 1: Customer Support Resolution Agent',
+      'Scenario 2: Code Generation with Claude Code',
+      'Scenario 3: Multi-Agent Research System',
+      'Scenario 4: Developer Productivity with Claude',
+      'Scenario 5: Claude Code for CI/CD',
+      'Scenario 6: Structured Data Extraction'
+    ]},
+    { type:'everyone', text:'Thursday: light review only — error log and the five domain summaries. No new material. Friday: test ProctorFree, have government-issued ID ready, confirm your quiet room.' },
+    { type:'milestone', text:'By August 22 you are exam ready. Book your exam when your second mock confirms ≥720. On the day: 60 questions, 120 minutes. Eliminate two options, reason between the rest.' }
+  ]}
+];
+
+/* ── render calendar ── */
+(function(){
+  const con = document.getElementById('cal-container');
+  weeks.forEach(w => {
+    const el = document.createElement('div');
+    el.className = 'cal-week' + (w.open ? ' open' : '');
+    let acts = '';
+    w.actions.forEach(a => {
+      const dotCls = a.type==='lead'?'l':a.type==='milestone'?'m':'e';
+      const who = a.type==='lead'?'Domain / study lead':a.type==='milestone'?'Milestone':'Everyone';
+      if(a.type==='lead'){
+        acts += `<div class="action lead-action" onclick="openModal('${a.detail}')"><span class="ld ${dotCls}"></span><div class="action-inner"><span class="action-who">${who}</span><span class="action-txt">${a.text}</span></div></div>`;
+      } else {
+        const bodyHtml = a.items
+          ? `<span class="action-txt">${a.text}</span><ul class="action-list">${a.items.map(i=>`<li>${i}</li>`).join('')}</ul>`
+          : `<span class="action-txt">${a.text}</span>`;
+        acts += `<div class="action${a.type==='milestone'?' milestone-row':''}"><span class="ld ${dotCls}"></span><div class="action-inner"><span class="action-who">${who}</span>${bodyHtml}</div></div>`;
+      }
+    });
+    el.innerHTML = `<button class="cal-head" onclick="this.parentElement.classList.toggle('open')" aria-expanded="${w.open?'true':'false'}">
+      <span class="cal-wn">${w.n}</span>
+      <span class="cal-wt">${w.t}</span>
+      <span class="cal-wd">${w.d}</span>
+      <span class="cal-arr">›</span>
+    </button>
+    <div class="cal-body">${acts}</div>`;
+    con.appendChild(el);
+  });
+})();
+
+/* ── tabs ── */
+function showTab(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── modal ── */
+function openModal(key){
+  const d = details[key];
+  document.getElementById('m-badge').textContent = d.badge;
+  document.getElementById('m-title').textContent = d.title;
+  document.getElementById('m-body').innerHTML = d.body;
+  document.getElementById('moverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('moverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+/* ── copy prompt ── */
+function copyPrompt(){
+  const text = document.getElementById('tutor-prompt').textContent;
+  const btn = document.getElementById('copy-btn');
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copy'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+</script>
+</body>
+</html>
